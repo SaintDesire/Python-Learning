@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block links %}
+ <link rel="stylesheet" href="{% static 'todo/css/todo.css' %}">
+{% endblock %}
+
+{% block title %}
+ Todo update page
+{% endblock %}
+
+{% block content %}
+
+<div class="todoList">
+ <h2>To-Do List</h2>
+      <form method="post" action="{% url 'editTodo' pk=todo.id %}">
+        <div class="pb-2">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-row align-items-center">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div>
+                 <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+</div>
+
+{% endblock %}

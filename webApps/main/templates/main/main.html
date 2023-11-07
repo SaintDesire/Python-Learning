@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+	Nikita Korshun
+{% endblock %}
+
+{% block content %}
+
+    <section class="portfolio-section">
+        <h2 style="user-select: none">PROJECTS</h2>
+        <ul class="project-buttons">
+            <a href="{% url 'todo' %}" class="project-button">
+                <li class="project-item">
+                    App 1
+                        <div class="project-info">
+                            <h3>TodoList App</h3>
+                            <p>The Todolist app is a straightforward task management tool that helps users organize their daily activities.
+                                Users can easily add, edit, and delete tasks, as well as mark them as completed. With a clean and user-friendly interface,
+                                the app provides a seamless experience for staying on top of tasks and boosting productivity.</p>
+                        </div>
+                </li>
+            </a>
+            <a href="#" class="project-button">
+                <li class="project-item">
+                    App 2
+                        <div class="project-info">
+                            <h3>Заголовок 2</h3>
+                            <p>Описание проекта 2</p>
+                        </div>
+                </li>
+            </a>
+            <a href="#" class="project-button">
+                <li class="project-item">
+                    App 3
+                        <div class="project-info">
+                            <h3>Заголовок 3</h3>
+                            <p>Описание проекта 3</p>
+                        </div>
+                </li>
+            </a>
+        </ul>
+    </section>
+
+    <section class="portfolio-section">
+        <h2 style="user-select: none">ABOUT ME</h2>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block links %}
+  <link rel="stylesheet" href="{% static 'todo/css/todo.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+{% endblock %}
+
+{% block title %}
+  TodoList App
+{% endblock %}
+
+{% block content %}
+
+<div class="todoList">
+  <h2>To-Do List</h2>
+
+  <section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-top h-100">
+        <div class="col">
+          <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+            <div class="card-body py-4 px-4 px-md-5">
+
+              <form method="post">
+                <div class="pb-2">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex flex-row align-items-center">
+                        {% csrf_token %}
+                        {{ form.title }}
+                      </div>
+                    </div>
+                  </div>
+                        <p style="margin-top: 10px;">Due date</p>
+                        <div style="display: flex; justify-content: space-between">
+                             {{ form.dueDate }}
+                            <div style="display: none">
+                              {{ form.addDate }}
+                              {{ form.status }}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                </div>
+              </form>
+
+              <hr class="my-4">
+
+              <div class="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
+                <p class="small mb-0 me-2 text-muted">Filter</p>
+                  <form action="{% url 'todo' %}" method="post">
+                      {% csrf_token %}
+                          <select name="sort">
+                            <option {% if sort_by == 'addDate' %} selected {% endif %}value="addDate">Added date</option>
+                            <option {% if sort_by == 'dueDate' %} selected {% endif %} value="dueDate">Due date</option>
+                          </select>
+                          <select name="order">
+                            <option {% if order_by == 'asc' %} selected {% endif %} value="asc">Ascending</option>
+                            <option {% if order_by == 'desc' %} selected {% endif %} value="desc">Descending</option>
+                          </select>
+                        <input type="submit" value="Sort" style="margin-left: 10px;"/>
+                  </form>
+              </div>
+
+                {% if todos %}
+                  {% for todo in todos %}
+                    <ul class="list-group list-group-horizontal rounded-0 bg-transparent">
+                      <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
+                        <div class="form-check">
+
+                                <form action="{% url 'update_todo_status' pk=todo.id %}" method="post">
+                                  {% csrf_token %}
+                                  <input class="form-check-input myCheckbox" type="checkbox" value=""
+                                         id="myCheckbox-{{ todo.id }}" aria-label="..."
+                                         {% if todo.status %} checked {% endif %}
+                                         data-todo-id="{{ todo.id }}"
+                                         onclick="handleCheckboxChange(this)">
+                                <button type="submit" id="submitButton-{{ todo.id }}" style="display: none">Submit</button>
+                                </form>
+
+
+                        </div>
+                      </li>
+                      <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
+                        <p class="lead fw-normal mb-0">{{ todo.title }}</p>
+                      </li>
+                    {% if todo.dueDate %}
+                      <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
+                        <p class="lead fw-normal mb-0">{{ todo.dueDate }}</p>
+                      </li>
+                    {% endif %}
+                      <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
+                        <div class="d-flex flex-row justify-content-end mb-1">
+                          <a href="{% url 'editTodo' pk=todo.id %}" class="text-info" data-mdb-toggle="tooltip" title="Edit todo">
+                            <i class="fas fa-pencil-alt me-3"></i>
+                          </a>
+                          <a href="{% url 'deleteTodo' todo.id %}" class="text-danger" data-mdb-toggle="tooltip" title="Delete todo">
+                            <i class="fas fa-trash-alt"></i>
+                          </a>
+                        </div>
+                        <div class="text-end text-muted">
+                          <a href="#!" class="text-muted" data-mdb-toggle="tooltip" title="Created date">
+                            <p class="small mb-0"><i class="fas fa-info-circle me-2"></i>{{ todo.addDate|date:"M. j, Y" }}</p>
+                          </a>
+                        </div>
+                      </li>
+                    </ul>
+                  {% endfor %}
+                {% else %}
+                  <p>No todos</p>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+</div>
+
+
+<script>
+$(document).ready(function () {
+    $('input[type="checkbox"]').change(function () {
+        // Get the todo ID and checked status from the checkbox
+        var todoId = $(this).data('todo-id');
+        var isChecked = $(this).prop('checked');
+
+        // Send an AJAX request to update the todo status
+        $.ajax({
+            url: '/update_todo_status/',
+            type: 'POST',
+            data: {
+                todo_id: todoId,
+                is_checked: isChecked
+            },
+            error: function (error) {
+                console.error('Error updating todo status:', error);
+            }
+        });
+    });
+});
+
+function handleCheckboxChange(checkbox) {
+    // Get the todo ID from the data-todo-id attribute
+    var todoId = checkbox.getAttribute('data-todo-id');
+
+    // Construct the IDs for the checkbox and submit button
+    var checkboxId = 'myCheckbox-' + todoId;
+    var submitButtonId = 'submitButton-' + todoId;
+
+    // Get the form, checkbox, and submit button elements
+    var form = document.getElementById('myForm');
+    var checkbox = document.getElementById(checkboxId);
+    var submitButton = document.getElementById(submitButtonId);
+
+    // Add an event listener for the change event of the checkbox
+    checkbox.addEventListener('change', function () {
+        // Simulate a click on the submit button when the checkbox is checked
+        submitButton.click();
+        console.log('Checkbox ' + todoId + ' checked');
+    });
+}
+
+
+</script>
+{% endblock %}
