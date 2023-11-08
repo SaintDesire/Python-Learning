@@ -1,10 +1,70 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 .form {
     width: 30%;
     margin-top: 100px;
-    margin-left: 100px;
+    margin-left: 50px;
 }
 
 .form button {
     margin-left: auto;
     margin-right: 0;
+}
+
+.city {
+    background: #c5c5c5;
+    min-width: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 2px solid grey;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.city_span {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: auto 0;
+}
+
+
+.city_span label {
+    margin: auto 5px;
+}
+
+.deleteButton {
+    margin: auto 10px;
+}
+
+.weather {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#errorWindow {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #ffdddd;
+    border: 1px solid #ff0000;
+    z-index: 1000;
+}
+
+#closeButton {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: bold;
 }

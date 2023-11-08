@@ -9,27 +9,40 @@
 {% endblock %}
 
 {% block content %}
+
+<div class="container">
     <div class="form">
-        <form method="post">
+        <form method="post" class="text-end">
             <div class="mb-3 weatherInput">
+                {% csrf_token %}
                 <label for="exampleFormControlInput1" class="form-label">Weather in your city</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="City...">
+                {{ form.name }}
+                <span>{{ error }}</span>
             </div>
             <button type="submit" class="btn btn-primary">Get</button>
         </form>
     </div>
 
-    <div class="weather">
-        {% for city in all_info %}
-            <div class="city">
-                {{ city.city }}
-                {{ city.temp }} <sup>o</sup>
-                <img src="https://openweathermap.org/img/wn/{{ city.icon }}@2x.png" alt="temp-logo">
-            </div>
-
-        {% endfor %}
+    <div style="width: 650px; margin-top: 60px; margin-right: 100px;">
+        <h4 class="text-center text-black p-2">History</h4>
+        <div class="weather ">
+            {% if all_info %}
+                {% for city in all_info %}
+                    <div class="city">
+                        <span style="user-select: none;" class="city_span">
+                            <label>{{ city.city }}</label>
+                            <label>{{ city.temp }} <sup>o</sup></label>
+                            <img src="https://openweathermap.org/img/wn/{{ city.icon }}@2x.png" alt="temp-logo">
+                        </span>
+                        <a href="{% url 'deleteCity' city.id %}" class="text-danger deleteButton" data-mdb-toggle="tooltip" title="Delete city">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
-
+</div>
 
 
 {% endblock %}
