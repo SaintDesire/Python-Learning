@@ -1,0 +1,35 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'weather/css/weather.css' %}">
+{% endblock %}
+{% block title %}
+	Weather app
+{% endblock %}
+
+{% block content %}
+    <div class="form">
+        <form method="post">
+            <div class="mb-3 weatherInput">
+                <label for="exampleFormControlInput1" class="form-label">Weather in your city</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="City...">
+            </div>
+            <button type="submit" class="btn btn-primary">Get</button>
+        </form>
+    </div>
+
+    <div class="weather">
+        {% for city in all_info %}
+            <div class="city">
+                {{ city.city }}
+                {{ city.temp }} <sup>o</sup>
+                <img src="https://openweathermap.org/img/wn/{{ city.icon }}@2x.png" alt="temp-logo">
+            </div>
+
+        {% endfor %}
+    </div>
+
+
+
+{% endblock %}

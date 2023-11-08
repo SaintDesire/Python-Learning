@@ -4,4 +4,5 @@ from . import views
 urlpatterns = [
     path('', views.index, name='home'),
     path('todo',include('todo.urls')),
+    path('weather', include('weather.urls')),
 ]
