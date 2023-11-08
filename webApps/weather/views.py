@@ -26,9 +26,11 @@ def weather(request):
 
     for city in cities:
         res = requests.get(url.format(city.name)).json()
+        if int(res["main"]["temp"]) > 0:
+            temp = '+' + str(int(res["main"]["temp"]))
         city_info = {
             'city': city.name,
-            'temp': res["main"]["temp"],
+            'temp': temp,
             'icon': res["weather"][0]["icon"],
             'id' : city.id
         }
