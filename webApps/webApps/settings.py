@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'todo',
-    'weather'
+    'weather',
+    'currency_converter'
 ]
 
 MIDDLEWARE = [

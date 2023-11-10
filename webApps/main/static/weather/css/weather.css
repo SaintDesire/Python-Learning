@@ -42,6 +42,20 @@
     margin: auto 10px;
 }
 
+@media (max-width: 1280px) {
+    .weather-container {
+        width: 650px;
+        margin-top: 60px;
+        margin-right: 100px;
+    }
+
+    .form {
+        width: 30%;
+        margin-top: 100px;
+        margin-left: 25px;
+    }
+}
+
 .weather {
     display: flex;
     flex-direction: row;

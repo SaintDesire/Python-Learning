@@ -108,7 +108,7 @@ h2 {
 .project-buttons li:active {
     background: #FF8C00;
     box-shadow: none;
-    transform: scale(0.9);
+    transform: scale(1);
 }
 
 
