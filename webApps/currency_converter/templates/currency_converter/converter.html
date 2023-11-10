@@ -1,0 +1,53 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'converter/css/converter.css' %}">
+{% endblock %}
+{% block title %}
+	Currency converter app
+{% endblock %}
+
+{% block content %}
+<form action="{% url 'converter' %}" method="post" class="form">
+    {% csrf_token %}
+    <div class="form__container">
+        <div class="form__section">
+            <label for="from_curr" class="form__label">From*</label>
+            <select id="from_curr" name="fromCurr" value="{{ fromCurr }}" class="form__select border-rad">
+                {% for curr in currencies %}
+                    <option value="{{ curr }}" {% if fromCurr == curr %}selected{% endif %}>{{ curr }}</option>
+                {% endfor %}
+            </select>
+            <label for="amount" class="form__label">Amount*</label>
+            <input id='amount' type="number" step="any" placeholder="Введите число" {% if fromAmount %} value="{{ fromAmount }}" {% endif %} name="fromAmount" class="form__input border-rad">
+        </div>
+        <div class="form__section submit-button">
+            <button type="submit" class="form__submit">
+                <i class="fa-solid fa-arrow-right-arrow-left fa-2xl"></i>
+            </button>
+        </div>
+        <div class="form__section">
+            <label for="to-curr" class="form__label">To*</label>
+            <select id="to-curr" name="toCurr" value="{{ toCurr }}" class="form__select border-rad">
+                {% for curr in currencies %}
+                    <option value="{{ curr }}" {% if toCurr == curr %}selected{% endif %}>{{ curr }}</option>
+                {% endfor %}
+            </select>
+            <label for="result" class="form__label">Result</label>
+            <input id='result' type="text" placeholder="0.00" value="{{ res }}" readonly class="form__input border-rad">
+        </div>
+    </div>
+</form>
+
+<script>
+    const icon = document.getElementById('icon');
+    const submitButton = document.querySelector('.form__submit');
+
+    icon.addEventListener('click', () => {
+        submitButton.click();
+    });
+</script>
+
+{% endblock %}
